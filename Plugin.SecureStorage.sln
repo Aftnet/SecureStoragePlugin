@@ -6,8 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{86211188-62DD-47CA-A705-26A4C7A076CB}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyInfo.cs = AssemblyInfo.cs
+		Plugin.SecureStorage.nuspec = Plugin.SecureStorage.nuspec
 		README.md = README.md
-		SecureStorage.Plugin.nuspec = SecureStorage.Plugin.nuspec
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.SecureStorage", "Plugin.SecureStorage\Plugin.SecureStorage.csproj", "{3A15A807-B51A-4782-91E9-5AFEA81350D4}"
