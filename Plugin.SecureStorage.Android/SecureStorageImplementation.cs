@@ -13,9 +13,6 @@ namespace Plugin.SecureStorage
 {
     internal class SecureStorageImplementation : ISecureStorage
     {
-        private const string AndroidKeyStoreProviderName = "AndroidKeyStore";
-        private const string KeyAlias = "SecureStoragePluginKey";
-
         private static readonly Lazy<IKey> EncryptionKey = new Lazy<IKey>(GetEncryptionKey);
         private static readonly byte[] EncryptionIV = Enumerable.Repeat(default(byte), 128).ToArray();
 
@@ -33,7 +30,7 @@ namespace Plugin.SecureStorage
         {
             using (var preferences = GetPreferences())
             {
-                return preferences.GetString(key, defaultValue);
+                return preferences.GetString(GeneratePreferenceKey(key), defaultValue);
             }
         }
 
@@ -53,7 +50,7 @@ namespace Plugin.SecureStorage
             {
                 try
                 {
-                    editor.PutString(key, value);
+                    editor.PutString(GeneratePreferenceKey(key), value);
                     return true;
                 }
                 catch
@@ -73,7 +70,7 @@ namespace Plugin.SecureStorage
             {
                 try
                 {
-                    editor.Remove(key);
+                    editor.Remove(GeneratePreferenceKey(key));
                     return true;
                 }
                 catch
@@ -90,19 +87,27 @@ namespace Plugin.SecureStorage
         {
             using (var preferences = GetPreferences())
             {
-                return preferences.Contains(key);
+                return preferences.Contains(GeneratePreferenceKey(key));
             }
         }
 
         #endregion
+
         private static ISharedPreferences GetPreferences()
         {
             return PreferenceManager.GetDefaultSharedPreferences(Android.App.Application.Context);
         }
 
+        private static string GeneratePreferenceKey(string key)
+        {
+            return $"SecStoragePlugin_{key}";
+        }
 
         private static IKey GetEncryptionKey()
         {
+            const string AndroidKeyStoreProviderName = "AndroidKeyStore";
+            const string KeyAlias = "SecureStoragePluginKey";
+
             IKey output = null;
 
             var store = KeyStore.GetInstance(AndroidKeyStoreProviderName);
