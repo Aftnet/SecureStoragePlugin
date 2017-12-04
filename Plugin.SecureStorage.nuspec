@@ -11,7 +11,7 @@
     <iconUrl>https://github.com/Aftnet/SecureStoragePlugin/raw/master/Icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides Secure storage of key value pairs for iOS, Android and UWP apps.</description>
-    <summary>Secure storage of key value pairs for iOS, Android and UWP apps.</summary>
+    <summary>Secure storage of key value pairs for iOS, Android, UWP, Windows Desktop and OSX apps.</summary>
     <tags>xamarin, plugin, plugin for xamarin, android, xamarin.forms, ios, secure, storage, UWP</tags>
     <dependencies>
       <group targetFramework="net46">

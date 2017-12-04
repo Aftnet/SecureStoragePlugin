@@ -3,7 +3,7 @@
 
 # Secure Storage Xamarin Plugin
 
-Supports Android, iOS, UWP and Desktop Windows (.net 4.6.1 and up)
+Supports Android, iOS, UWP, Desktop Windows and OSX (.net 4.6.1 and up)
 
 The plugin can be used to securely store sensitive data strings such as password using each platform's native keychain.
 
