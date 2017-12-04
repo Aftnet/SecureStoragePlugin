@@ -17,7 +17,7 @@ namespace Plugin.SecureStorage
         /// <summary>
         /// Name of the storage file.
         /// </summary>
-        public static string StorageFile = "Util.SecureStorage";
+        private static string StorageFile = "Util.SecureStorage";
 
         /// <summary>
         /// Password for storage
@@ -27,9 +27,9 @@ namespace Plugin.SecureStorage
         private readonly char[] StoragePasswordArray;
 
         // Store for Key Value pairs
-        KeyStore _store;
+        private KeyStore _store;
         // password protection for the store
-        KeyStore.PasswordProtection _passwordProtection;
+        private KeyStore.PasswordProtection _passwordProtection;
 
         /// <summary>
         /// Default constructor created or loads the store
