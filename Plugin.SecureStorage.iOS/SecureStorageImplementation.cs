@@ -9,14 +9,8 @@ namespace Plugin.SecureStorage
     /// Secure storage implementation for iOS.
     /// It is primarily for storing secure strings such as generic password.
     /// </summary>
-    internal class SecureStorageImplementation : SecureStorageImplementationBase
+    internal class SecureStorageImplementation : ISecureStorage
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public SecureStorageImplementation()
-        {
-        }
 
         #region ISecureStorage implementation
         /// <summary>
@@ -28,10 +22,8 @@ namespace Plugin.SecureStorage
         /// <param name="key">Key.</param>
         /// <param name="defaultValue">Default value.</param>
 
-        public override string GetValue(string key, string defaultValue)
+        public string GetValue(string key, string defaultValue)
         {
-            base.GetValue(key, defaultValue);
-
             SecStatusCode ssc;
             var found = GetRecord(key, out ssc);
             if (ssc == SecStatusCode.Success)
@@ -47,10 +39,8 @@ namespace Plugin.SecureStorage
         /// Effectively old value is overwrittern 
         /// Does not accept null value.
         /// </summary>
-        public override bool SetValue(string key, string value)
+        public bool SetValue(string key, string value)
         {
-            base.SetValue(key, value);
-
             RemoveRecord(key);
             return AddRecord(key, value) == SecStatusCode.Success;
         }
@@ -58,20 +48,16 @@ namespace Plugin.SecureStorage
         /// <summary>
         /// Deletes the key and corresponding value from the storage
         /// </summary>
-        public override bool DeleteKey(string key)
+        public bool DeleteKey(string key)
         {
-            base.DeleteKey(key);
-
             return RemoveRecord(key) == SecStatusCode.Success;
         }
 
         /// <summary>
         /// Determines whether specified key exists in the storage
         /// </summary>
-        public override bool HasKey(string key)
+        public bool HasKey(string key)
         {
-            base.HasKey(key);
-
             SecStatusCode ssc;
             GetRecord(key, out ssc);
 
