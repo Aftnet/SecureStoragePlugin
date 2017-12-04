@@ -31,9 +31,11 @@
     <file src="Plugin.SecureStorage.UWP\bin\$configuration$\Plugin.SecureStorage.*" target="lib\uap10.0" />
     <!--Windows Desktop-->
     <file src="Plugin.SecureStorage.Net46\bin\$configuration$\Plugin.SecureStorage.*" target="lib\net46" />
-    <!--Xamarin.Android-->
+    <!--Android-->
     <file src="Plugin.SecureStorage.Android\bin\$configuration$\Plugin.SecureStorage.*" target="lib\MonoAndroid10" />
-    <!--Xamarin.iOS Unified-->
+    <!--iOS-->
     <file src="Plugin.SecureStorage.iOS\bin\$configuration$\Plugin.SecureStorage.*" target="lib\Xamarin.iOS10" />
+    <!--macOS-->
+    <file src="Plugin.SecureStorage.macOS\bin\$configuration$\Plugin.SecureStorage.*" target="lib\Xamarin.Mac20" />
   </files>
 </package>
