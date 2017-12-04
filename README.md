@@ -1,9 +1,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/c4pqlns7okgf5h7b?svg=true)](https://ci.appveyor.com/project/Aftnet/securestorageplugin)
-[![NuGet version](https://badge.fury.io/nu/Xam.Plugin.SecureStorage.svg)](https://badge.fury.io/nu/Xam.Plugin.SecureStorage)
+[![NuGet version](https://img.shields.io/nuget/v/Xam.Plugin.SecureStorage.svg)](https://www.nuget.org/packages/Xam.Plugin.SecureStorage/)
 
 # Secure Storage Xamarin Plugin
 
-Supports Android, iOS, UWP and Desktop Windows (.net 4.6.1 and up)
+Supports Android, iOS, UWP, Desktop Windows and OSX (.net 4.6.1 and up)
 
 The plugin can be used to securely store sensitive data strings such as password using each platform's native keychain.
 

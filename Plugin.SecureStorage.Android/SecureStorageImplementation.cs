@@ -1,70 +1,22 @@
-using Plugin.SecureStorage.Abstractions;
-using System;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Text;
+﻿using Android.Content;
+using Android.Preferences;
+using Android.Security.Keystore;
 using Java.Security;
 using Javax.Crypto;
+using Javax.Crypto.Spec;
+using Plugin.SecureStorage.Abstractions;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace Plugin.SecureStorage
 {
-    /// <summary>
-    /// Android implementation of secure storage. Done using KeyStore
-    /// Make sure to initialize store password for Android.
-    /// </summary>
-    internal class SecureStorageImplementation : SecureStorageImplementationBase
+    internal class SecureStorageImplementation : ISecureStorage
     {
-        /// <summary>
-        /// Name of the storage file.
-        /// </summary>
-        public static string StorageFile = "Util.SecureStorage";
+        private static readonly Lazy<IKey> EncryptionKey = new Lazy<IKey>(GetEncryptionKey);
+        private static readonly byte[] EncryptionIV = Enumerable.Repeat(default(byte), 128).ToArray();
 
-        /// <summary>
-        /// Password for storage
-        /// </summary>
-        public static string StoragePassword;
-
-        private readonly char[] StoragePasswordArray;
-
-        // Store for Key Value pairs
-        KeyStore _store;
-        // password protection for the store
-        KeyStore.PasswordProtection _passwordProtection;
-
-        /// <summary>
-        /// Default constructor created or loads the store
-        /// </summary>
-        public SecureStorageImplementation()
-        {
-            // verify that password is set
-            if (string.IsNullOrWhiteSpace(StoragePassword))
-            {
-                throw new Exception($"Must set StoragePassword");
-            }
-
-            StoragePasswordArray = StoragePassword.ToCharArray();
-
-            // Instantiate store and protection
-            _store = KeyStore.GetInstance(KeyStore.DefaultType);
-            _passwordProtection = new KeyStore.PasswordProtection(StoragePasswordArray);
-
-            // if store exists, load it from the file
-            try
-            {
-                using (var stream = new IsolatedStorageFileStream(StorageFile, FileMode.Open, FileAccess.Read))
-                {
-                    _store.Load(stream, StoragePasswordArray);
-                }
-            }
-            catch (Exception)
-            {
-                // this will happen for the first run. As no file is expected to be present
-                _store.Load(null, StoragePasswordArray);
-            }
-
-        }
-
-        #region ISecureStorage implementation
+        #region ISecureStorageImplementation
 
         /// <summary>
         /// Retrieves the value from storage.
@@ -74,22 +26,12 @@ namespace Plugin.SecureStorage
         /// <returns>The value.</returns>
         /// <param name="key">Key.</param>
         /// <param name="defaultValue">Default value.</param>
-        public override string GetValue(string key, string defaultValue)
+        public string GetValue(string key, string defaultValue)
         {
-            // validate using base class
-            base.GetValue(key, defaultValue);
-
-            // get the entry from the store
-            // if it does not exist, return the default value
-            KeyStore.SecretKeyEntry entry = GetSecretKeyEntry(key);
-
-            if (entry != null)
+            using (var preferences = GetPreferences())
             {
-                var encodedBytes = entry.SecretKey.GetEncoded();
-                return Encoding.UTF8.GetString(encodedBytes);
+                return preferences.GetString(GeneratePreferenceKey(key), defaultValue);
             }
-
-            return defaultValue;
         }
 
         /// <summary>
@@ -101,127 +43,119 @@ namespace Plugin.SecureStorage
         /// <c>false</c>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        public override bool SetValue(string key, string value)
+        public bool SetValue(string key, string value)
         {
-            // validate the parameters
-            base.SetValue(key, value);
-
-            // create entry
-            var secKeyEntry = new KeyStore.SecretKeyEntry(new StringKeyEntry(value));
-
-            // save it in the KeyStore
-            _store.SetEntry(key, secKeyEntry, _passwordProtection);
-
-            // save the store
-            Save();
-
-            return true;
+            using (var preferences = GetPreferences())
+            using (var editor = preferences.Edit())
+            {
+                try
+                {
+                    editor.PutString(GeneratePreferenceKey(key), value);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
 
         /// <summary>
         /// Deletes the key and corresponding value from the storage
         /// </summary>
-        public override bool DeleteKey(string key)
+        public bool DeleteKey(string key)
         {
-            // valdiate using base class
-            base.DeleteKey(key);
-
-            // retrieve the entry
-            KeyStore.SecretKeyEntry entry = GetSecretKeyEntry(key);
-
-            // if entry exists, delete from store, save the store and return true
-            if (entry != null)
+            using (var preferences = GetPreferences())
+            using (var editor = preferences.Edit())
             {
-                _store.DeleteEntry(key);
-
-                Save();
-
-                return true;
+                try
+                {
+                    editor.Remove(GeneratePreferenceKey(key));
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
-
-            return false;
         }
 
         /// <summary>
         /// Determines whether specified key exists in the storage
         /// </summary>
-        public override bool HasKey(string key)
+        public bool HasKey(string key)
         {
-            // validate if key is valid
-            base.HasKey(key);
-            // retrieve to see, if it exists
-            return GetSecretKeyEntry(key) != null;
+            using (var preferences = GetPreferences())
+            {
+                return preferences.Contains(GeneratePreferenceKey(key));
+            }
         }
 
         #endregion
 
-        // persists the store using password
-        private void Save()
+        private static ISharedPreferences GetPreferences()
         {
-            using (var stream = new IsolatedStorageFileStream(StorageFile, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                _store.Store(stream, StoragePasswordArray);
-            }
+            return PreferenceManager.GetDefaultSharedPreferences(Android.App.Application.Context);
         }
 
-        // retrieves the secret key entry from the store
-        private KeyStore.SecretKeyEntry GetSecretKeyEntry(string key)
+        private static string GeneratePreferenceKey(string key)
         {
-            try
-            {
-                return _store.GetEntry(key, _passwordProtection) as KeyStore.SecretKeyEntry;
-            }
-            catch (UnrecoverableKeyException) // swallow this exception. Can be caused by invalid key
-            {
-                return null;
-            }
+            return $"SecStoragePlugin_{key}";
         }
 
-        /// <summary>
-        /// Class for storing string as entry
-        /// </summary>
-        private class StringKeyEntry : Java.Lang.Object, ISecretKey
+        private static IKey GetEncryptionKey()
         {
-            private const string AlgoName = "RAW";
+            const string AndroidKeyStoreProviderName = "AndroidKeyStore";
+            const string KeyAlias = "SecureStoragePluginKey";
 
-            private byte[] _bytes;
+            IKey output = null;
 
-            /// <summary>
-            /// Constructor makes sure that entry is valid.
-            /// Converts it to bytes
-            /// </summary>
-            /// <param name="entry">Entry.</param>
-            public StringKeyEntry(string entry)
+            var store = KeyStore.GetInstance(AndroidKeyStoreProviderName);
+            store.Load(null);
+
+            if (store.ContainsAlias(KeyAlias))
             {
-                if (entry == null)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                _bytes = ASCIIEncoding.UTF8.GetBytes(entry);
+                output = store.GetKey(KeyAlias, null);
+            }
+            else
+            {
+                var generator = KeyGenerator.GetInstance(KeyProperties.KeyAlgorithmAes, AndroidKeyStoreProviderName);
+                generator.Init(new KeyGenParameterSpec.Builder(KeyAlias, KeyStorePurpose.Encrypt | KeyStorePurpose.Decrypt)
+                    .SetBlockModes(KeyProperties.BlockModeGcm).SetEncryptionPaddings(KeyProperties.EncryptionPaddingNone)
+                    .SetRandomizedEncryptionRequired(false).Build());
+                output = generator.GenerateKey();
             }
 
-            #region IKey implementation
-            public byte[] GetEncoded()
-            {
-                return _bytes;
-            }
+            return output;
+        }
 
-            public string Algorithm
-            {
-                get
-                {
-                    return AlgoName;
-                }
-            }
-            public string Format
-            {
-                get
-                {
-                    return AlgoName;
-                }
-            }
-            #endregion
+        private static Cipher GetCipher(CipherMode mode)
+        {
+            var output = Cipher.GetInstance("AES/GCM/NoPadding");
+            output.Init(mode, EncryptionKey.Value, new GCMParameterSpec(128, EncryptionIV));
+            return output;
+        }
+
+        private static string EncryptString(string plainText)
+        {
+            var cipher = GetCipher(CipherMode.EncryptMode);
+
+            var buffer = Encoding.UTF8.GetBytes(plainText);
+            buffer = cipher.DoFinal(buffer);
+
+            var output = Convert.ToBase64String(buffer);
+            return output;
+        }
+
+        private static string DecryptString(string cipherText)
+        {
+            var cipher = GetCipher(CipherMode.DecryptMode);
+
+            var buffer = Convert.FromBase64String(cipherText);
+            buffer = cipher.DoFinal(buffer);
+
+            var output = Encoding.UTF8.GetString(buffer);
+            return output;
         }
     }
 }
