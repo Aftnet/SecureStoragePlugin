@@ -34,9 +34,9 @@ namespace Plugin.SecureStorage
         static ISecureStorage CreateSecureStorage()
         {
 #if NETSTANDARD1_0
-        return null;
+            return null;
 #else
-            return new SecureStorageImplementation();
+            return new SecureStorageValidator(new SecureStorageImplementation());
 #endif
         }
 

@@ -6,85 +6,87 @@ using System;
 
 namespace Plugin.SecureStorage.Abstractions
 {
-	/// <summary>
-	/// This base class provides validation functionality that is common across platforms
-	/// </summary>
-	internal abstract class SecureStorageImplementationBase : ISecureStorage
-	{
+    /// <summary>
+    /// This base class provides validation functionality that is common across platforms
+    /// </summary>
+    internal class SecureStorageValidator : ISecureStorage
+    {
+        private readonly ISecureStorage BackingStore;
         /// <summary>
         /// Default constructor
         /// </summary>
-		public SecureStorageImplementationBase ()
-		{
-		}
+		public SecureStorageValidator(ISecureStorage backingStore)
+        {
+            BackingStore = backingStore;
+        }
 
-		#region ISecureStorage implementation
+        #region ISecureStorage implementation
 
-		/// <summary>
-		/// Validates the key
-		/// </summary>
-		/// <returns>null</returns>
-		/// <param name="key">Key.</param>
-		/// <param name="defaultValue">Default value.</param>
-		public virtual string GetValue (string key, string defaultValue = null)
-		{
-			if (string.IsNullOrWhiteSpace (key))
-			{
-				throw new ArgumentException ("Invalid parameter: " + nameof (key));
-			}
+        /// <summary>
+        /// Validates the key
+        /// </summary>
+        /// <returns>null</returns>
+        /// <param name="key">Key.</param>
+        /// <param name="defaultValue">Default value.</param>
+        public virtual string GetValue(string key, string defaultValue = null)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Invalid parameter: " + nameof(key));
+            }
 
-			return null;
-		}
+            return BackingStore.GetValue(key, defaultValue);
+        }
 
-		/// <summary>
-		/// Validates that key is not whitespace or null.
-		/// And value is not null
-		/// </summary>
-		/// <returns>false</returns>
-		public virtual bool SetValue (string key, string value)
-		{
-			if (string.IsNullOrWhiteSpace (key))
-			{
-				throw new ArgumentException ("Invalid parameter: " + nameof (key));
-			}
+        /// <summary>
+        /// Validates that key is not whitespace or null.
+        /// And value is not null
+        /// </summary>
+        /// <returns>false</returns>
+        public virtual bool SetValue(string key, string value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Invalid parameter: " + nameof(key));
+            }
 
-			if (value == null)
-			{
-				throw new ArgumentNullException (nameof (value) + " cannot be null.");
-			}
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value) + " cannot be null.");
+            }
 
-			return false;
-		}
+            return BackingStore.SetValue(key, value);
+        }
 
-		/// <summary>
-		/// Validates that key is not whitespace or null.
-		/// </summary>
-		/// <returns>false</returns>
-		public virtual bool DeleteKey (string key)
-		{
-			if (string.IsNullOrWhiteSpace (key))
-			{
-				throw new ArgumentException ("Invalid parameter: " + nameof (key));
-			}
+        /// <summary>
+        /// Validates that key is not whitespace or null.
+        /// </summary>
+        /// <returns>false</returns>
+        public virtual bool DeleteKey(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Invalid parameter: " + nameof(key));
+            }
 
-			return false;
-		}
+            return BackingStore.DeleteKey(key);
+        }
 
-		/// <summary>
-		/// Validates that key is not whitespace or null.
-		/// </summary>
-		/// <returns>false</returns>
-		public virtual bool HasKey (string key)
-		{
-			if (string.IsNullOrWhiteSpace (key))
-			{
-				throw new ArgumentException ("Invalid parameter: " + nameof (key));
-			}
+        /// <summary>
+        /// Validates that key is not whitespace or null.
+        /// </summary>
+        /// <returns>false</returns>
+        public virtual bool HasKey(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Invalid parameter: " + nameof(key));
+            }
 
-			return false;
-		}
+            return BackingStore.HasKey(key);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }
 
