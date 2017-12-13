@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Plugin.SecureStorage
 {
-    internal class SecureStorageImplementation : ISecureStorage
+    public class SecureStorageImplementation : ISecureStorage
     {
         private static readonly Lazy<IKey> EncryptionKey = new Lazy<IKey>(GetEncryptionKey);
         private static readonly byte[] EncryptionIV = Enumerable.Repeat(default(byte), 128).ToArray();
