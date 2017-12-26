@@ -51,7 +51,7 @@ namespace Plugin.SecureStorage
                 try
                 {
                     editor.PutString(GeneratePreferenceKey(key), value);
-                    return true;
+                    return editor.Commit();
                 }
                 catch
                 {
@@ -71,7 +71,7 @@ namespace Plugin.SecureStorage
                 try
                 {
                     editor.Remove(GeneratePreferenceKey(key));
-                    return true;
+                    return editor.Commit();
                 }
                 catch
                 {
