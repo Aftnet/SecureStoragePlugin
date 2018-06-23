@@ -1,6 +1,3 @@
-environment:
-  rootName: Plugin.SecureStorage
-  targetSolution: Plugin.SecureStorage_CI.sln
 version: 1.0.{build}
 pull_requests:
   do_not_increment_build_number: true
@@ -12,7 +9,7 @@ configuration: Release
 shallow_clone: true
 dotnet_csproj:
   patch: true
-  file: '**\{rootName}.csproj'
+  file: '**\Plugin.SecureStorage.csproj'
   version: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
@@ -20,11 +17,11 @@ dotnet_csproj:
   informational_version: '{version}'
 before_build:
 - ps:
-    mkdir .\{rootName}\bin\Debug
+    mkdir .\Plugin.SecureStorage\bin\Debug
 
-    nuget restore {targetSolution}
+    nuget restore Plugin.SecureStorage_CI.sln
 build:
-  project: '{targetSolution}'
+  project: Plugin.SecureStorage_CI.sln
   verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
