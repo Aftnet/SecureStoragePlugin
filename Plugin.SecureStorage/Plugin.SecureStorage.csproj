@@ -13,15 +13,15 @@
     <Authors>Alberto Fustinoni</Authors>
     <PackageId>Xam.Plugin.SecureStorage</PackageId>
     <PackOnBuild>true</PackOnBuild>
-    <RepositoryUrl>https://github.com/Aftnet/FileSystemPlugin</RepositoryUrl>
-    <PackageIconUrl>https://github.com/Aftnet/FileSystemPlugin/raw/master/Icon.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/aftnet/FileSystemPlugin</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/aftnet/FileSystemPlugin/blob/master/License.txt</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/aftnet/SecureStoragePlugin</RepositoryUrl>
+    <PackageIconUrl>https://github.com/Aftnet/SecureStoragePlugin/raw/master/Icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/aftnet/SecureStoragePlugin</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/aftnet/SecureStoragePlugin/blob/master/README.md</PackageLicenseUrl>
     <Owners>Alberto Fustinoni</Owners>
-    <Title>File system plugin for Xamarin and Windows</Title>
-    <Summary>File System API abstraction</Summary>
-    <Description>File System API abstraction</Description>
-    <PackageTags>xamarin, plugin, plugin for xamarin, android, xamarin.forms, ios, file system, storage, UWP</PackageTags>
+    <Title>Secure storage plugin for Xamarin and Windows</Title>
+    <Summary>Provides Secure storage of key value pairs for iOS, Android and UWP apps</Summary>
+    <Description>Provides Secure storage of key value pairs for iOS, Android and UWP apps</Description>
+    <PackageTags>xamarin, plugin, plugin for xamarin, android, xamarin.forms, ios, secure, storage, UWP</PackageTags>
     <Copyright>Copyright 2018</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
