@@ -18,6 +18,7 @@ dotnet_csproj:
 before_build:
 - ps:
     mkdir .\Plugin.SecureStorage\bin\Debug
+    
     nuget restore
 build:
   verbosity: minimal
