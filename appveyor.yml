@@ -21,6 +21,7 @@ before_build:
 
     nuget restore
 build:
+  project: Plugin.SecureStorage_CI.sln
   verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
