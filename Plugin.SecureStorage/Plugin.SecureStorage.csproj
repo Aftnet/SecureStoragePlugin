@@ -1,30 +1,76 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.5.4">
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="rmdir %USERPROFILE%\.nuget\packages\$(PackageId) /Q /S" />
+  </Target>
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFrameworks>netstandard1.0;net46;uap10.0;Xamarin.iOS10;Xamarin.Mac20;MonoAndroid81</TargetFrameworks>
+    <AssemblyName>Plugin.SecureStorage</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Version>1.0.0.0</Version>
+    <Authors>Alberto Fustinoni</Authors>
+    <PackageId>Xam.Plugin.SecureStorage</PackageId>
+    <PackOnBuild>true</PackOnBuild>
+    <RepositoryUrl>https://github.com/aftnet/SecureStoragePlugin</RepositoryUrl>
+    <PackageIconUrl>https://github.com/Aftnet/SecureStoragePlugin/raw/master/Icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/aftnet/SecureStoragePlugin</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/aftnet/SecureStoragePlugin/blob/master/README.md</PackageLicenseUrl>
+    <Owners>Alberto Fustinoni</Owners>
+    <Title>Secure storage plugin for Xamarin and Windows</Title>
+    <Summary>Provides Secure storage of key value pairs for iOS, Android and UWP apps</Summary>
+    <Description>Provides Secure storage of key value pairs for iOS, Android and UWP apps</Description>
+    <PackageTags>xamarin, plugin, plugin for xamarin, android, xamarin.forms, ios, secure, storage, UWP</PackageTags>
+    <Copyright>Copyright 2018</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>default</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.0\Plugin.SecureStorage.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.0\Plugin.SecureStorage.xml</DocumentationFile>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="Abstractions\*.cs" />
+    <Compile Include="*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Plugin.SecureStorage.Abstractions\Plugin.SecureStorage.Abstractions.csproj" />
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Compile Include="Net46\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <Compile Include="UAP\*.cs" />
   </ItemGroup>
 
-  <Import Project="..\Plugin.SecureStorage.Shared\Plugin.SecureStorage.Shared.projitems" Label="Shared" />
+  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
+    <Compile Include="Android\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS'))">
+    <Compile Include="iOS\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac'))">
+    <Compile Include="iOS\*.cs" />
+  </ItemGroup>
 
 </Project>

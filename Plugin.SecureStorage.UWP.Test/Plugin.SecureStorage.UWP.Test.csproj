@@ -11,7 +11,7 @@
     <AssemblyName>Plugin.SecureStorage.UWP.Test</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -95,9 +95,6 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="UnitTestApp.xaml.cs">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
@@ -126,7 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.2</Version>
+      <Version>6.1.5</Version>
     </PackageReference>
     <PackageReference Include="xunit">
       <Version>2.3.1</Version>
@@ -139,17 +136,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SecureStorage.Abstractions\Plugin.SecureStorage.Abstractions.csproj">
-      <Project>{7e933dd7-d547-42e7-a43a-8b142da7e876}</Project>
-      <Name>Plugin.SecureStorage.Abstractions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugin.SecureStorage.Test\Plugin.SecureStorage.Test.csproj">
       <Project>{fb313d30-6154-4d2b-9c23-cae405d85c42}</Project>
       <Name>Plugin.SecureStorage.Test</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.SecureStorage.UWP\Plugin.SecureStorage.UWP.csproj">
-      <Project>{0eda6bc1-0f4a-47c1-82c6-7d03c8621229}</Project>
-      <Name>Plugin.SecureStorage.UWP</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems" Label="Shared" />

@@ -42,14 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SecureStorage.Abstractions\Plugin.SecureStorage.Abstractions.csproj">
-      <Project>{7e933dd7-d547-42e7-a43a-8b142da7e876}</Project>
-      <Name>Plugin.SecureStorage.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.SecureStorage.Net46\Plugin.SecureStorage.Net46.csproj">
-      <Project>{1476a74c-e552-4003-a4d5-2deac0382ed8}</Project>
-      <Name>Plugin.SecureStorage.Net46</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugin.SecureStorage.Test\Plugin.SecureStorage.Test.csproj">
       <Project>{fb313d30-6154-4d2b-9c23-cae405d85c42}</Project>
       <Name>Plugin.SecureStorage.Test</Name>
@@ -57,11 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="xunit">

@@ -98,16 +98,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SecureStorage.Abstractions\Plugin.SecureStorage.Abstractions.csproj">
-      <Project>{7e933dd7-d547-42e7-a43a-8b142da7e876}</Project>
-      <Name>Plugin.SecureStorage.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.SecureStorage.iOS\Plugin.SecureStorage.iOS.csproj">
-      <Project>{566acc48-b3c9-4f2a-a112-cd76e30d4bcd}</Project>
-      <Name>Plugin.SecureStorage.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
     <ProjectReference Include="..\Plugin.SecureStorage.Test\Plugin.SecureStorage.Test.csproj">
       <Project>{fb313d30-6154-4d2b-9c23-cae405d85c42}</Project>
       <Name>Plugin.SecureStorage.Test</Name>
@@ -118,7 +108,7 @@
       <Version>2.3.1</Version>
     </PackageReference>
     <PackageReference Include="xunit.runner.devices">
-      <Version>2.3.2</Version>
+      <Version>2.3.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems" Label="Shared" />

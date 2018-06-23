@@ -2,9 +2,10 @@
 // This code is for viewing only. 
 // If you need it to use for any other reason, please contact the author.
 
+using Plugin.SecureStorage.Abstractions;
 using System;
 
-namespace Plugin.SecureStorage.Abstractions
+namespace Plugin.SecureStorage
 {
     /// <summary>
     /// This base class provides validation functionality that is common across platforms

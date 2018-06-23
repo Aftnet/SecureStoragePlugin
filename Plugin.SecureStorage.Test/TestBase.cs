@@ -5,14 +5,7 @@ namespace Plugin.SecureStorage.Test
 {
     public abstract class TestBase
     {
-        protected abstract ISecureStorage GetTarget();
-
-        private readonly ISecureStorage Target;
-
-        public TestBase()
-        {
-            Target = GetTarget();
-        }
+        private ISecureStorage Target { get; } = CrossSecureStorage.Current;
 
         [Fact]
         public void Works()
