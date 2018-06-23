@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.SecureStorage.UWP.Te
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems*{250f724e-03d3-4093-9dc0-bb130f426802}*SharedItemsImports = 4
+		Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems*{2ced6e8d-68a7-4b0f-9c3a-524ce9007f1f}*SharedItemsImports = 4
 		Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems*{67293509-57f4-4016-8d9d-9f6fdc34e00e}*SharedItemsImports = 13
 		Plugin.SecureStorage.Test.Shared\Plugin.SecureStorage.Test.Shared.projitems*{fef678dc-d1df-47f6-8971-e406adaccb31}*SharedItemsImports = 4
 	EndGlobalSection
