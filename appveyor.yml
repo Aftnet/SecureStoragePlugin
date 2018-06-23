@@ -24,7 +24,7 @@ before_build:
 
     nuget restore {targetSolution}
 build:
-  project: {targetSolution}
+  project: '{targetSolution}'
   verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
