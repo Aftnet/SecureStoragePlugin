@@ -7,7 +7,7 @@ namespace Plugin.SecureStorage
     public static class CrossSecureStorage
     {
 #if !NETSTANDARD1_4
-        private static Lazy<SecureStorage> FileSystem { get; } = new Lazy<SecureStorage>(LazyThreadSafetyMode.PublicationOnly);
+        private static Lazy<SecureStorage> SecureStorage { get; } = new Lazy<SecureStorage>(LazyThreadSafetyMode.PublicationOnly);
 #endif
 
         public static bool Supported
@@ -29,7 +29,7 @@ namespace Plugin.SecureStorage
 #if NETSTANDARD1_4
                 throw new NotImplementedException();
 #else
-                return FileSystem.Value;
+                return SecureStorage.Value;
 #endif
             }
         }
