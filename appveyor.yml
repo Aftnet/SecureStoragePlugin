@@ -17,8 +17,6 @@ dotnet_csproj:
   informational_version: '{version}'
 before_build:
 - ps:
-    mkdir .\Plugin.SecureStorage\bin\Debug
-
     nuget restore Plugin.SecureStorage_CI.sln
 build:
   project: Plugin.SecureStorage_CI.sln
@@ -28,7 +26,7 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: cO5Ki051HsltxSZrXrRsGuFnI3zS3wMOdE6CFoiQz85RBefWY++iyW2QOTtp2ROa
+    secure: rTPwMJQ8zMZT/AAfDBnPDvBOBKbcqwmgpBix5lldiXBfKvzK/ElIpzuRUsEZNvS6
   skip_symbols: true
   artifact: /.*\.nupkg/
   on:
