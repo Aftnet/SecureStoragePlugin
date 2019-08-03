@@ -1,48 +1,37 @@
-﻿using System;
-using Plugin.SecureStorage.Abstractions;
+﻿using Plugin.SecureStorage.Abstractions;
+using System;
+using System.Threading;
 
 namespace Plugin.SecureStorage
 {
-    /// <summary>
-    /// Cross platform SecureStorage implemenations
-    /// </summary>
-    public class CrossSecureStorage
+    public static class CrossSecureStorage
     {
-        static Lazy<ISecureStorage> Implementation = new Lazy<ISecureStorage>(() => CreateSecureStorage(), System.Threading.LazyThreadSafetyMode.PublicationOnly);
+#if !NETSTANDARD1_4
+        private static Lazy<SecureStorageImplementation> fileSystem = new Lazy<SecureStorageImplementation>(LazyThreadSafetyMode.PublicationOnly);
+#endif
 
-        /// <summary>
-        /// Gets whether the plugin is supported on the current platform
-        /// </summary>
-        public static bool IsSupported => Implementation.Value != null;
+        public static bool Supported
+        {
+            get
+            {
+#if NETSTANDARD1_4
+                return false;
+#else
+                return true;
+#endif
+            }
+        }
 
-        /// <summary>
-        /// Current settings to use
-        /// </summary>
         public static ISecureStorage Current
         {
             get
             {
-                var ret = Implementation.Value;
-                if (ret == null)
-                {
-                    throw NotImplementedInReferenceAssembly();
-                }
-                return ret;
-            }
-        }
-
-        static ISecureStorage CreateSecureStorage()
-        {
-#if NETSTANDARD1_0
-            return null;
+#if NETSTANDARD1_4
+                throw new NotImplementedException();
 #else
-            return new SecureStorageValidator(new SecureStorageImplementation());
+                return fileSystem.Value;
 #endif
-        }
-
-        internal static Exception NotImplementedInReferenceAssembly()
-        {
-            return new NotImplementedException("This functionality is not implemented in the portable version of this assembly.  You should reference the NuGet package from your main application project in order to reference the platform-specific implementation.");
+            }
         }
     }
 }
