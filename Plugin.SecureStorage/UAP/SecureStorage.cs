@@ -9,7 +9,7 @@ namespace Plugin.SecureStorage
     /// Android implementation of secure storage. Done using KeyStore
     /// Make sure to initialize store password for Android.
     /// </summary>
-    internal class SecureStorageImplementation : ISecureStorage
+    internal class SecureStorage : ISecureStorage
     {
         private string CredentialsResource => Package.Current.Id.Name;
 
@@ -19,7 +19,7 @@ namespace Plugin.SecureStorage
         /// <summary>
         /// Default constructor created or loads the store
         /// </summary>
-        public SecureStorageImplementation()
+        public SecureStorage()
         {
             Vault = new PasswordVault();
         }
